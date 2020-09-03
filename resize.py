@@ -1,7 +1,7 @@
 import glob
 import os
 import sys
-from PIL import Image
+from PIL import Image, ImageOps
 import tkinter as tk
 from tkinter.filedialog import askdirectory
 
@@ -11,6 +11,7 @@ filedirectory = ""
 
 def main():
     tk.Tk().withdraw()
+    print(argouments)
     setdirectory()
     modifyfile()
 
@@ -31,13 +32,14 @@ def modifyfile():
     # get every files in directory
     filedirectorys = glob.glob(filedirectory + "/*.png")
 
-    size = (int(argouments[1]), int(argouments[2]))
+    size = [int(argouments[1]), int(argouments[2])]
 
     i = 1
     for file in filedirectorys:
         name = file.split("\\")[1]
         immagine = Image.open(file)
-        immagine.thumbnail(size, Image.ANTIALIAS)
+        #immagine.resize((500, 600), Image.ANTIALIAS)
+        immagine = ImageOps.fit(immagine, size, Image.ANTIALIAS)
         immagine.save(filedirectory + "/output/" +
                       name, optimize=True, quality=100)
         completed = int(100/len(filedirectorys)*i)
