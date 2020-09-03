@@ -6,4 +6,5 @@
 
 ### USAGE:
 
-`python resize.py width height`
+- `pip install -r requirements.txt`
+- `python resize.py width height`
