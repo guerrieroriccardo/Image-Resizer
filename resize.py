@@ -1,6 +1,7 @@
 import glob
 import os
 import sys
+import argparse
 from PIL import Image, ImageOps
 import tkinter as tk
 from tkinter.filedialog import askdirectory
@@ -11,9 +12,15 @@ filedirectory = ""
 
 def main():
     tk.Tk().withdraw()
-    print(argouments)
+
+    parser = argparse.ArgumentParser(description="Bulk image size scaler")
+    required_args = parser.add_argument_group("required argouments")
+    required_args.add_argument('-w', type=int, help="width", required=True)
+    required_args.add_argument('-l', type=int, help="height", required=False)
+    args = parser.parse_args()
+
     setdirectory()
-    modifyfile()
+    modifyfile(args.w, args.l)
 
 
 def getfile():
@@ -28,11 +35,14 @@ def setdirectory():
         os.makedirs(filedirectory + "/output/")  # create the output directory
 
 
-def modifyfile():
+def modifyfile(width, height=0):
     # get every files in directory
     filedirectorys = glob.glob(filedirectory + "/*.png")
 
-    size = [int(argouments[1]), int(argouments[2])]
+    if height == 0:
+        size = [width, width]
+    else:
+        size = [width, height]
 
     i = 1
     for file in filedirectorys:
@@ -47,4 +57,5 @@ def modifyfile():
         i += 1
 
 
-main()
+if __name__ == '__main__':
+    main()
